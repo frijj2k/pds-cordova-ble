@@ -1,5 +1,3 @@
-cordova.define("com.pdsuk.cordova.bluetoothle.BluetoothLe", function(require, exports, module) {
-
 
   var PLUGIN_NAME = 'BluetoothLePlugin';
   var base64 = require('cordova/base64');
@@ -603,5 +601,3 @@ cordova.define("com.pdsuk.cordova.bluetoothle.BluetoothLe", function(require, ex
 
 
   module.exports = bluetoothle;
-
-});

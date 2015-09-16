@@ -3,9 +3,9 @@
     <engines>
         <engine name="cordova" version=">=3.0.0" />
     </engines>
-    <name>MM Cordova Bluetooth LE Plugin</name>
-    <description>Connect with devices using Bluetooth Low Energy communication</description>
-    <keywords>bluetooth,low energy,smart</keywords>
+    <name>PDS Cordova BLE Plugin</name>
+    <description>Connect with devices using BLE</description>
+    <keywords>ble,bluetooth,low energy,smart</keywords>
     <license>Apache 2.0</license>
     <js-module src="www/bluetoothle.js" name="BluetoothLe">
         <clobbers target="window.bluetoothle" />
