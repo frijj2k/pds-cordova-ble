@@ -1,5 +1,5 @@
-PDS Bluetooth LE (BLE) a.k.a Bluetooth Smart Cordova Plugin
-===========================================================
+PDS Bluetooth LE (BLE) / Bluetooth Smart Cordova Plugin
+=======================================================
 
 This is a Cordova Bluetooth LE plugin based on [mutualmobile/cordova-bluetoothle](https://github.com/mutualmobile/cordova-bluetoothle) which was originally based on
 [randdusing/BluetoothLE](https://github.com/randdusing/BluetoothLE).
@@ -11,7 +11,7 @@ does exactly one thing). The API is based on the Chrome Bluetooth low energy API
 ## Features
 
 1. Promise API for asynchronous code.
-2. Bonding support for encrypted communications.
+2. Bonding support for encrypted communications. **(COMING SOON!)**
 
 There are two parts of that API needed to interact with Bluetooth low
 energy devices:
