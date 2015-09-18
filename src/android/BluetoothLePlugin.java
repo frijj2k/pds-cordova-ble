@@ -54,6 +54,14 @@ public class BluetoothLePlugin extends CordovaPlugin {
     private Map<CallbackKey, CallbackContext> readWriteCallbacks;
     private Map<String, BluetoothGatt> connectedGattServers;
 
+    //private CallbackContext mScanCallbackContext;
+    //private CallbackContext mResetCallbackContext;
+    private Context mContext;
+    private boolean mRegisteredReceiver = false;
+    private boolean mRegisteredPairingReceiver = false;
+    private Runnable mOnPowerOn;
+    private CallbackContext mPowerOnCallbackContext;
+
     //Client Configuration UUID for notifying/indicating
     private final UUID clientConfigurationDescriptorUuid = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
