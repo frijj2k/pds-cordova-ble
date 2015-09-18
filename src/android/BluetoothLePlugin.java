@@ -3,33 +3,28 @@ package com.pdsuk.cordova.bluetoothle;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.UUID;
 
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.PluginResult;
+import org.apache.cordova.*;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
+import android.bluetooth.*;
+
+import android.content.*;
+import android.app.Activity;
 import android.util.Base64;
 import android.util.Log;
+
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.io.UnsupportedEncodingException;
+
 
 public class BluetoothLePlugin extends CordovaPlugin {
 
