@@ -851,8 +851,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
             if (bondState == BluetoothDevice.BOND_BONDED) {
                 try {
-                    //BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(mGatt.getDevice());
-                    BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(device);
+                    BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(mGatt.getDevice());
                     Log.d("bluetoothle", "Cancel user input");
                 } catch (Exception e) {
                     Log.e("bluetoothle", e.getMessage());
@@ -904,7 +903,8 @@ public class BluetoothLePlugin extends CordovaPlugin {
         String mPasskey = "123456";
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
-            if (!this.mPasskey.isEmpty()) {
+            //if (!this.mPasskey.isEmpty()) {
+            if (!mPasskey.isEmpty()) {
                 if (!mRegisteredPairingReceiver) {
                     final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
                     cordova.getActivity().registerReceiver(mPairingBroadcastReceiver, filter);
@@ -918,11 +918,11 @@ public class BluetoothLePlugin extends CordovaPlugin {
                     e.printStackTrace();
                 }
             }
+
             try {
-                JSONObject o = new JSONObject();
-                o.put("deviceHandle", mHandle);
-                o.put("state", newState);
-                keepCallback(connectCallback, o);
+                JSONObject obj = new JSONObjects.asDevice(gatt, getBluetoothManager());
+                connectCallback.success();
+
             } catch (JSONException e) {
                 e.printStackTrace();
                 assert (false);
