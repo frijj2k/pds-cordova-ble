@@ -851,7 +851,8 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
             if (bondState == BluetoothDevice.BOND_BONDED) {
                 try {
-                    BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(mGatt.getDevice());
+                    //BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(mGatt.getDevice());
+                    BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(device);
                     Log.d("bluetoothle", "Cancel user input");
                 } catch (Exception e) {
                     Log.e("bluetoothle", e.getMessage());
@@ -898,6 +899,10 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+
+        // TODO - Hardcoded for now
+        String mPasskey = "123456";
+
         if (status == BluetoothGatt.GATT_SUCCESS) {
             if (!this.mPasskey.isEmpty()) {
                 if (!mRegisteredPairingReceiver) {
