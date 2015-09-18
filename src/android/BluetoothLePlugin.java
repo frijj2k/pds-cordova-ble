@@ -850,6 +850,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
                     " previous: " + previousBondState);
 
             if (bondState == BluetoothDevice.BOND_BONDED) {
+                /*
                 try {
                     BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(mGatt.getDevice());
                     Log.d("bluetoothle", "Cancel user input");
@@ -857,6 +858,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
                     Log.e("bluetoothle", e.getMessage());
                     e.printStackTrace();
                 }
+                */
                 cordova.getActivity().unregisterReceiver(this);
             }
         }
@@ -918,7 +920,6 @@ public class BluetoothLePlugin extends CordovaPlugin {
                     e.printStackTrace();
                 }
             }
-
             try {
                 JSONObject obj = new JSONObjects.asDevice(gatt, getBluetoothManager());
                 connectCallback.success();
