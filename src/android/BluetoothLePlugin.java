@@ -622,7 +622,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
                             }
                         }
                         try {
-                            JSONObject obj = new JSONObjects.asDevice(gatt, getBluetoothManager());
+                            JSONObject obj = JSONObjects.asDevice(gatt, getBluetoothManager());
                             connectCallback.success();
                         } catch (JSONException e) {
                             e.printStackTrace();
