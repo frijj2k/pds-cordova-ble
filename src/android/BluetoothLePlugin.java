@@ -54,13 +54,9 @@ public class BluetoothLePlugin extends CordovaPlugin {
     private Map<CallbackKey, CallbackContext> readWriteCallbacks;
     private Map<String, BluetoothGatt> connectedGattServers;
 
-    //private CallbackContext mScanCallbackContext;
-    //private CallbackContext mResetCallbackContext;
     private Context mContext;
     private boolean mRegisteredReceiver = false;
     private boolean mRegisteredPairingReceiver = false;
-    private Runnable mOnPowerOn;
-    private CallbackContext mPowerOnCallbackContext;
 
     //Client Configuration UUID for notifying/indicating
     private final UUID clientConfigurationDescriptorUuid = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
@@ -349,7 +345,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
         connectedGattServers.remove(gatt.getDevice().getAddress());
         gatt.close();
         if (gatt.getDevice().getBondState() == BluetoothDevice.BOND_BONDED) {
-            gatt.remove(address);
+            connectedGattServers.remove(address);
         }
         callback.success();
     }
@@ -866,6 +862,40 @@ public class BluetoothLePlugin extends CordovaPlugin {
         }
     };
 
+
+    /**
+     *
+     * @param callbackContext
+     * @param message
+     */
+    private void keepCallback(final CallbackContext callbackContext, JSONObject message) {
+        PluginResult r = new PluginResult(PluginResult.Status.OK, message);
+        r.setKeepCallback(true);
+        callbackContext.sendPluginResult(r);
+    }
+
+    /**
+     *
+     * @param callbackContext
+     * @param message
+     */
+    private void keepCallback(final CallbackContext callbackContext, String message) {
+        PluginResult r = new PluginResult(PluginResult.Status.OK, message);
+        r.setKeepCallback(true);
+        callbackContext.sendPluginResult(r);
+    }
+
+    /**
+     *
+     * @param callbackContext
+     * @param message
+     */
+    private void keepCallback(final CallbackContext callbackContext, byte[] message) {
+        PluginResult r = new PluginResult(PluginResult.Status.OK, message);
+        r.setKeepCallback(true);
+        callbackContext.sendPluginResult(r);
+    }
+
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -887,13 +917,13 @@ public class BluetoothLePlugin extends CordovaPlugin {
                 JSONObject o = new JSONObject();
                 o.put("deviceHandle", mHandle);
                 o.put("state", newState);
-                keepCallback(mConnectContext, o);
+                keepCallback(connectCallback, o);
             } catch (JSONException e) {
                 e.printStackTrace();
                 assert (false);
             }
         } else {
-            mConnectContext.error(status);
+            connectCallback.error(status);
         }
         //refresh(gatt);
     }
