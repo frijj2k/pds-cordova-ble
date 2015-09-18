@@ -598,8 +598,37 @@ public class BluetoothLePlugin extends CordovaPlugin {
         public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
             cordova.getActivity().runOnUiThread(new Runnable() {
                 public void run() {
+
+                    // TODO - Hardcoded for now
+                    String mPasskey = "123456";
+
                     if (newState == BluetoothProfile.STATE_CONNECTED) {
                         gatt.discoverServices();
+
+                    } else if (status == BluetoothGatt.GATT_SUCCESS) {
+                        //if (!this.mPasskey.isEmpty()) {
+                        if (!mPasskey.isEmpty()) {
+                            if (!mRegisteredPairingReceiver) {
+                                final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
+                                cordova.getActivity().registerReceiver(mPairingBroadcastReceiver, filter);
+                                mRegisteredPairingReceiver = true;
+                            }
+                            try {
+                                Method createBond = BluetoothDevice.class.getMethod("createBond", (Class[]) null);
+                                createBond.invoke(gatt.getDevice(), (Object[]) null);
+                            } catch (Exception e) {
+                                Log.e("bluetoothle", e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        try {
+                            JSONObject obj = new JSONObjects.asDevice(gatt, getBluetoothManager());
+                            connectCallback.success();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            assert (false);
+                        }
+
                     } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                         JSONObject obj = JSONObjects.asDevice(gatt, getBluetoothManager());
 
@@ -876,6 +905,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
         callbackContext.sendPluginResult(r);
     }
 
+
     /**
      *
      * @param callbackContext
@@ -887,6 +917,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
         callbackContext.sendPluginResult(r);
     }
 
+
     /**
      *
      * @param callbackContext
@@ -896,42 +927,6 @@ public class BluetoothLePlugin extends CordovaPlugin {
         PluginResult r = new PluginResult(PluginResult.Status.OK, message);
         r.setKeepCallback(true);
         callbackContext.sendPluginResult(r);
-    }
-
-    @Override
-    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-
-        // TODO - Hardcoded for now
-        String mPasskey = "123456";
-
-        if (status == BluetoothGatt.GATT_SUCCESS) {
-            //if (!this.mPasskey.isEmpty()) {
-            if (!mPasskey.isEmpty()) {
-                if (!mRegisteredPairingReceiver) {
-                    final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
-                    cordova.getActivity().registerReceiver(mPairingBroadcastReceiver, filter);
-                    mRegisteredPairingReceiver = true;
-                }
-                try {
-                    Method createBond = BluetoothDevice.class.getMethod("createBond", (Class[]) null);
-                    createBond.invoke(gatt.getDevice(), (Object[]) null);
-                } catch (Exception e) {
-                    Log.e("bluetoothle", e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-            try {
-                JSONObject obj = new JSONObjects.asDevice(gatt, getBluetoothManager());
-                connectCallback.success();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                assert (false);
-            }
-        } else {
-            connectCallback.error(status);
-        }
-        //refresh(gatt);
     }
 
 
