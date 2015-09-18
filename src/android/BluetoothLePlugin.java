@@ -821,15 +821,15 @@ public class BluetoothLePlugin extends CordovaPlugin {
                             .invoke(remoteDevice, pin);
                     BluetoothDevice.class.getMethod("setPairingConfirmation", boolean.class)
                             .invoke(remoteDevice, true);
-                    Log.d(TAG, "Success to set passkey.");
+                    Log.d("bluetoothle", "Success to set passkey.");
                     final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-                    mContext.registerReceiver(mBondingBroadcastReceiver, filter);
+                    cordova.getActivity().registerReceiver(mBondingBroadcastReceiver, filter);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Log.e("bluetoothle", e.getMessage());
                 e.printStackTrace();
             }
-            mContext.unregisterReceiver(this);
+            cordova.getActivity().unregisterReceiver(this);
             mRegisteredPairingReceiver = false;
         }
     };
@@ -841,19 +841,19 @@ public class BluetoothLePlugin extends CordovaPlugin {
             final int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
             final int previousBondState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, -1);
 
-            Log.d(TAG, "Bond state changed for: " + device.getAddress() +
+            Log.d("bluetoothle", "Bond state changed for: " + device.getAddress() +
                     " new state: " + bondState +
                     " previous: " + previousBondState);
 
             if (bondState == BluetoothDevice.BOND_BONDED) {
                 try {
                     BluetoothDevice.class.getMethod("cancelPairingUserInput").invoke(mGatt.getDevice());
-                    Log.d(TAG, "Cancel user input");
+                    Log.d("bluetoothle", "Cancel user input");
                 } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
+                    Log.e("bluetoothle", e.getMessage());
                     e.printStackTrace();
                 }
-                mContext.unregisterReceiver(this);
+                cordova.getActivity().unregisterReceiver(this);
             }
         }
     };
@@ -864,14 +864,14 @@ public class BluetoothLePlugin extends CordovaPlugin {
             if (!this.mPasskey.isEmpty()) {
                 if (!mRegisteredPairingReceiver) {
                     final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
-                    mContext.registerReceiver(mPairingBroadcastReceiver, filter);
+                    cordova.getActivity().registerReceiver(mPairingBroadcastReceiver, filter);
                     mRegisteredPairingReceiver = true;
                 }
                 try {
                     Method createBond = BluetoothDevice.class.getMethod("createBond", (Class[]) null);
                     createBond.invoke(gatt.getDevice(), (Object[]) null);
                 } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
+                    Log.e("bluetoothle", e.getMessage());
                     e.printStackTrace();
                 }
             }
