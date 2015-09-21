@@ -606,24 +606,25 @@ public class BluetoothLePlugin extends CordovaPlugin {
                         gatt.discoverServices();
 
                         if (status == BluetoothGatt.GATT_SUCCESS) {
-                        //if (!this.mPasskey.isEmpty()) {
-                        if (!mPasskey.isEmpty()) {
-                            if (!mRegisteredPairingReceiver) {
-                                final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
-                                cordova.getActivity().registerReceiver(mPairingBroadcastReceiver, filter);
-                                mRegisteredPairingReceiver = true;
+                            //if (!this.mPasskey.isEmpty()) {
+                            if (!mPasskey.isEmpty()) {
+                                if (!mRegisteredPairingReceiver) {
+                                    final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
+                                    cordova.getActivity().registerReceiver(mPairingBroadcastReceiver, filter);
+                                    mRegisteredPairingReceiver = true;
+                                }
+                                try {
+                                    Method createBond = BluetoothDevice.class.getMethod("createBond", (Class[]) null);
+                                    createBond.invoke(gatt.getDevice(), (Object[]) null);
+                                } catch (Exception e) {
+                                    Log.e("bluetoothle", e.getMessage());
+                                    e.printStackTrace();
+                                }
                             }
-                            try {
-                                Method createBond = BluetoothDevice.class.getMethod("createBond", (Class[]) null);
-                                createBond.invoke(gatt.getDevice(), (Object[]) null);
-                            } catch (Exception e) {
-                                Log.e("bluetoothle", e.getMessage());
-                                e.printStackTrace();
-                            }
+                            //JSONObject obj = JSONObjects.asDevice(gatt, getBluetoothManager());
+                            //connectCallback.success();
+                            //connectCallback = null;
                         }
-                        //JSONObject obj = JSONObjects.asDevice(gatt, getBluetoothManager());
-                        //connectCallback.success();
-                        //connectCallback = null;
 
                     } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                         JSONObject obj = JSONObjects.asDevice(gatt, getBluetoothManager());
