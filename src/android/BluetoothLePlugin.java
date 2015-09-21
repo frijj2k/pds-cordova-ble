@@ -320,7 +320,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
         BluetoothAdapter adapter = getBluetoothManager().getAdapter();
         BluetoothDevice device = getPairedDevice(adapter, address);
-        if (!device) {
+        if (device == null) {
             device = getDevice(address);
         }
 
