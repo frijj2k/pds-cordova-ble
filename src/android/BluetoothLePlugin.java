@@ -605,7 +605,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
                     if (newState == BluetoothProfile.STATE_CONNECTED) {
                         gatt.discoverServices();
 
-                    } else if (status == BluetoothGatt.GATT_SUCCESS) {
+                        if (status == BluetoothGatt.GATT_SUCCESS) {
                         //if (!this.mPasskey.isEmpty()) {
                         if (!mPasskey.isEmpty()) {
                             if (!mRegisteredPairingReceiver) {
@@ -621,7 +621,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
                                 e.printStackTrace();
                             }
                         }
-                        JSONObject obj = JSONObjects.asDevice(gatt, getBluetoothManager());
+                        //JSONObject obj = JSONObjects.asDevice(gatt, getBluetoothManager());
                         //connectCallback.success();
                         //connectCallback = null;
 
@@ -834,6 +834,11 @@ public class BluetoothLePlugin extends CordovaPlugin {
     };
 
 
+    // ###################################################################################
+    // ###################################################################################
+    // ###################################################################################
+
+
     private BroadcastReceiver mPairingBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
@@ -926,7 +931,12 @@ public class BluetoothLePlugin extends CordovaPlugin {
     }
 
 
-    // Used as keys for the `readWriteOperations` Map
+    // ###################################################################################
+    // ###################################################################################
+    // ###################################################################################
+
+
+        // Used as keys for the `readWriteOperations` Map
     private class CallbackKey {
         private BluetoothGatt gatt;
         private Object scd; // service, characteristic, or descriptor
