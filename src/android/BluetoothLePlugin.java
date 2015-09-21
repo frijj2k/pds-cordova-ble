@@ -317,10 +317,15 @@ public class BluetoothLePlugin extends CordovaPlugin {
         }
 
         connectCallback = callback;
-        BluetoothDevice device = getDevice(address);
+
+        BluetoothAdapter adapter = getBluetoothManager().getAdapter();
+        BluetoothDevice device = getPairedDevice(adapter, address);
+        if (!device) {
+            device = getDevice(address);
+        }
 
         if (device.getBondState() == 12) {
-
+            unpairDevice(device);
         }
 
         BluetoothGatt gatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, gattCallback);
