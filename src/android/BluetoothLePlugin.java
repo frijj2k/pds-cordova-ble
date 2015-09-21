@@ -328,6 +328,8 @@ public class BluetoothLePlugin extends CordovaPlugin {
             unpairDevice(device);
         }
 
+        pairDevice(device);
+
         BluetoothGatt gatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, gattCallback);
         connectedGattServers.put(gatt.getDevice().getAddress(), gatt);
     }
