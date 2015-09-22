@@ -67,7 +67,7 @@ public class JSONObjects {
             result.put("name", device.getName());
             result.put("rssi", rssi);
 
-            String scanRecord = Base64.encodeToString(ad, Base64.DEFAULT);
+            String scanRecordBase64 = Base64.encodeToString(ad, Base64.DEFAULT);
             result.put("scanRecordBase64", scanRecordBase64);
 
             int currentPos = 0;
