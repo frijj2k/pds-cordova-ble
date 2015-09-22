@@ -66,7 +66,9 @@ public class JSONObjects {
             result.put("address", device.getAddress());
             result.put("name", device.getName());
             result.put("rssi", rssi);
-            result.put("scanRecord", ad);
+
+            String scanRecord = Base64.encodeToString(ad, Base64.DEFAULT);
+            result.put("scanRecordBase64", scanRecordBase64);
 
             int currentPos = 0;
             int advertiseFlag = -1;
